@@ -1,12 +1,11 @@
 package br.com.zenom;
 
-import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.List;
 
 public class Main {
 
-    void main() throws FileNotFoundException {
+    void main() {
         var t1 = new Transaction(1, TransactionType.PAYMENT, new BigDecimal("9838.64"),
                         new TransactionCustomer("C1231006815", new BigDecimal("170136.0"), new BigDecimal("160296.36")),
                         new TransactionCustomer("M1979787155", new BigDecimal("0.0"), new BigDecimal("0.0")),
@@ -28,6 +27,13 @@ public class Main {
         IO.println(transactions.size());
 
         transactions.stream().limit(10).forEach(IO::println);
+
+        IO.println("------------------------------------------------------------------------------");
+
+        List<Transaction> transactionsBadData = transactionIngestor.read("data/paysim_with_bad_data.csv");
+        IO.println(transactionsBadData.size());
+
+        transactionsBadData.forEach(IO::println);
 
     }
 }
