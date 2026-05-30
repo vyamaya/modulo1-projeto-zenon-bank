@@ -2,6 +2,7 @@ package br.com.zenom;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
 
@@ -34,6 +35,28 @@ public class Main {
         IO.println(transactionsBadData.size());
 
         transactionsBadData.forEach(IO::println);
+
+        IO.println("------------------------------------------------------------------------------");
+
+        var fraudAnalyzer = new FraudAnalyzer(transactions);
+
+        long fraudCount = fraudAnalyzer.countFrauds();
+        IO.println("1. Total de Fraudes: " + fraudCount);
+
+        List<BigDecimal> highestFraudAmount = fraudAnalyzer.findHighestValueFraudAmounts(3 );
+
+        IO.println("2. Top 3 Fraudes de Maior Valor: ");
+        highestFraudAmount.forEach(amount -> IO.println("- %.2f".formatted(amount)));
+
+        List<String> suspiciousClients = fraudAnalyzer.findTopSuspiciousClients(5);
+        IO.println("3. Clientes Suspeitos: " + suspiciousClients);
+
+        BigDecimal totalFraudLoss = fraudAnalyzer.calculateTotalFraudsLoss();
+        IO.println("4. Prejuízo Total" + totalFraudLoss);
+
+        Map<TransactionType, Long> fraudCountByType = fraudAnalyzer.countFraudsByType();
+        IO.println("5. Fraudes por Tipo: ");
+        fraudCountByType.forEach((TransactionType type, Long count) -> IO.println("- %s: %d".formatted(type,count)));
 
     }
 }
