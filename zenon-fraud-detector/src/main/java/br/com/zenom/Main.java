@@ -58,5 +58,32 @@ public class Main {
         IO.println("5. Fraudes por Tipo: ");
         fraudCountByType.forEach((TransactionType type, Long count) -> IO.println("- %s: %d".formatted(type,count)));
 
+        IO.println("------------------------------------------------------------------------------");
+
+        TransactionRepository transactionRepository;
+
+        transactionRepository = new TransactionListRepository(transactions);
+        var notFoundOriginName = "C12345";
+        var existsOriginName = "C1868032458";
+
+        transactionRepository.findByOriginName(notFoundOriginName)
+                .ifPresentOrElse(IO::println, () -> IO.println("Transação não encontrada para o cliente " + notFoundOriginName));
+
+        long starTimeList = System.nanoTime();
+        transactionRepository.findByOriginName(existsOriginName)
+                .ifPresentOrElse(IO::println, () -> IO.println("Transação não encontrada para o cliente " + notFoundOriginName));
+        long endTimeList = System.nanoTime();
+        IO.println("Tempo de busca - List (ms): " + (endTimeList - starTimeList) / 1_000_000.0);
+
+        transactionRepository = new TransactionMapRepository(transactions);
+        transactionRepository.findByOriginName(notFoundOriginName)
+                .ifPresentOrElse(IO::println, () -> IO.println("Transação não encontrada para o cliente " + notFoundOriginName));
+
+        long starTimeMap = System.nanoTime();
+        transactionRepository.findByOriginName(existsOriginName)
+                .ifPresentOrElse(IO::println, () -> IO.println("Transação não encontrada para o cliente " + notFoundOriginName));
+        long endTimeMap = System.nanoTime();
+        IO.println("Tempo de busca - Map (ms): " + (endTimeMap - starTimeMap) / 1_000_000.0);
+
     }
 }
