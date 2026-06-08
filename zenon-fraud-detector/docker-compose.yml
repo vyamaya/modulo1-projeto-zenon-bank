@@ -1,0 +1,22 @@
+services:
+  db.zenom.frauds:
+    image: mysql:9
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: senha123
+      MYSQL_DATABASE: zenom_frauds
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql.zenom.frauds:/var/lib/mysql
+    networks:
+      - zenom_network
+
+volumes:
+  mysql.zenom.frauds:
+
+networks:
+  zenom_network:
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
